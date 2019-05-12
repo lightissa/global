@@ -1,0 +1,23 @@
+[control]
+10.0.0.[10:12] ansible_user=ubuntu ansible_password=foobar ansible_become=true
+# Ansible supports syntax like [10:12] - that means 10, 11 and 12.
+# Become clause means "use sudo".
+
+[network:children]
+control
+# when you specify group_name:children, it will use contents of group specified.
+
+[compute]
+10.0.0.[13:14] ansible_user=ubuntu ansible_password=foobar ansible_become=true
+
+[monitoring]
+10.0.0.10
+# This group is for monitoring node.
+# Fill it with one of the controllers' IP address or some others.
+
+[storage:children]
+compute
+
+[deployment]
+localhost       ansible_connection=local become=true
+# use localhost and sudo
